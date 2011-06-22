@@ -1,4 +1,4 @@
-grails
+grails-multiple-versions
 ================================
 
 Description
