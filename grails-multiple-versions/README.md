@@ -1,5 +1,4 @@
 grails
--------------
 
 * **Description**: a script to work with different grails versions simultaneously
 * **Dependencies**: 
