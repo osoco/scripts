@@ -1,0 +1,53 @@
+#!/bin/bash
+# Uses the grails version specified in the app properties file. If none found, uses the default installation
+# Grails installations directories must have the name grails-$VERSION (for example, grails-1.3.2) 
+#
+# Made by Diego Toharia (diego@toharia.com) for OSOCO
+
+# 
+# Configuration:
+#    - PROPERTIES_FILE: the file with the grails version 
+#      (app.grails.version will be used as property name)
+#    - WHERE_TO_LOOK_FOR_GRAILS_INSTALLATIONS: directories where there may be a grails installation
+#    - DEFAULT_GRAILS_INSTALLATION_NAME: the directory with the default grails installation to use 
+#      when none found in $PROPERTIES_FILEcurrent directory's 
+#
+
+PROPERTIES_FILE="application.properties"
+WHERE_TO_LOOK_FOR_GRAILS_INSTALLATIONS="$HOME/local /opt /usr/local/"
+DEFAULT_GRAILS_INSTALLATION_NAME="grails"
+
+#
+# Script implementation
+#
+
+# Find the grails installation name
+GRAILS_INSTALLATION_NAME="$DEFAULT_GRAILS_INSTALLATION_NAME"
+if [ -f "$PROPERTIES_FILE" ]; then
+	GRAILS_VERSION=`grep app.grails.version= "$PROPERTIES_FILE" | cut -d'=' -f2`
+	if [ ! -z "$GRAILS_VERSION" ] ; then
+		GRAILS_INSTALLATION_NAME="grails-$GRAILS_VERSION"
+    fi
+fi
+
+# Search the grails installation name in all the possible directories
+IFS=$' '
+GRAILS_HOME=""
+for dir in $WHERE_TO_LOOK_FOR_GRAILS_INSTALLATIONS ; do
+    GRAILS_HOME="$dir/$GRAILS_INSTALLATION_NAME"
+	if [ -d "$GRAILS_HOME" ]; then
+        break
+    fi
+done
+if [ ! -d "$GRAILS_HOME" ] ; then
+    echo "$GRAILS_INSTALLATION_NAME not found in $WHERE_TO_LOOK_FOR_GRAILS_INSTALLATIONS"
+    exit 1
+fi
+export GRAILS_HOME
+
+echo "=================================================="
+echo "Using $GRAILS_HOME as grails home..."
+echo "=================================================="
+
+$GRAILS_HOME/bin/grails $*
+
