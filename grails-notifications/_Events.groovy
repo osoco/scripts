@@ -12,27 +12,24 @@ eventExiting = { code ->
 }
 
 void notify(title, message) {
-	
-	def choices = 
-	[
-		[
-			'growlnotify',
-			'-n', 'Grails',
-			'-m', "$title: $message",
-			'--image', "${System.getenv('GRAILS_HOME')}/media/icons/favicon32.png"
+    def notificationsCmds = [
+        [
+            'growlnotify',
+            '-n', 'Grails',
+            '-m', "$title: $message",
+            '--image', "${System.getenv('GRAILS_HOME')}/media/icons/favicon32.png"
         ],
-	    [ 
+        [ 
             'notify-send',
-			title,
-			message,
-			'-i', "${System.getenv('GRAILS_HOME')}/doc/img/grails-icon.png"
-		]
-	]
-	
-	choices.each { choice ->
-		if ([ 'which', choice[0] ].execute().waitFor() == 0)
-		{
-			choice.execute()
-		}
-	}
+             title,
+             message,
+             '-i', "${System.getenv('GRAILS_HOME')}/doc/img/grails-icon.png"
+        ]
+    ]
+        
+    notificationsCmds.each { cmd ->
+        if ([ 'which', cmd[0] ].execute().waitFor() == 0) {
+            cmd.execute()
+        }
+    }
 }
