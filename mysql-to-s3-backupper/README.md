@@ -11,7 +11,7 @@ Dependencies
 
   * mysqldump
   * mysql
-  * bunzip2
+  * tar
   * s3cmd
 
 Usage
