@@ -1,4 +1,7 @@
 #!/bin/bash
+# Backup multiple mysql schemas into a s3 bucket
+# Author - Deigote for Osoco - diego.toharia@osoco.es
+
 MYSQL_CMD="mysql --skip-column-names"
 MYSQL_DUMP_CMD="mysqldump --single-transaction"
 COMPRESS_CMD="tar jcf"
